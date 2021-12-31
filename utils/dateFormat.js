@@ -3,10 +3,12 @@ module.exports = dateFormat = date => {
     const hours = date.getHours();
     const mins = date.getMinutes();
 
+    let time;
+
     if(hours > 12) {
-        const time = hours - 12 + mins + 'pm'
+        time = hours - 12 + ':' + mins + 'pm'
     } else {
-        const time = hours + mins + 'am'
+        time = hours + ':' + mins + 'am'
     }
     return `${day}, ${time }`;
 };

@@ -1,6 +1,26 @@
 const { User, Thought } = require('../models');
 
 const thoughtController = {
+    // get all thoughts
+    findAllThoughts(req, res) {
+        Thought.find({})
+        .then(dbThoughtData => res.json(dbThoughtData))
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
+    },
+    // get thought by id
+    findThoughtById({ params }, res) {
+        Thought.findOne({ _id: params.thoughtId })
+        .then(dbThoughtData => {
+            if (!dbThoughtData) {
+                return res.status(404).json({ message: 'No thought found.' });
+            }
+            res.json(dbThoughtData);
+        })
+        .catch(err => res.status(500).json(err));
+    },
     // add a thought
     addThought({ params, body }, res) {
         Thought.create(body)
@@ -31,6 +51,17 @@ const thoughtController = {
                 return res.status(404).json({ message: 'No user found' });
             }
             res.json(dbUserData);
+        })
+        .catch(err => res.status(500).json(err));
+    },
+    // update a thought
+    updateThought({ params, body }, res) {
+        Thought.findOneAndUpdate( { _id: params.thoughtId }, body, { new: true, runValidators: true })
+        .then(dbThoughtData => {
+            if (!dbThoughtData) {
+                return res.status(404).json({ message: 'No thought found.' });
+            }
+            res.json(dbThoughtData);
         })
         .catch(err => res.status(500).json(err));
     },

@@ -11,7 +11,7 @@ const UserSchema = new Schema ({
         type: String,
         unique: true,
         required: true,
-        match: ['/^[a-z0-9\._-]@[\.a-z[{2,6}]$/i', 'Please enter a valid email.']
+        match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/]
     },
     thoughts: [
         {
@@ -34,11 +34,11 @@ const UserSchema = new Schema ({
 });
 
 UserSchema.virtual('thoughtCount').get(function() {
-    return this.thoughts.length +1;
+    return this.thoughts.length;
 });
 
 UserSchema.virtual('friendCount').get(function() {
-    return this.friends.length +1;
+    return this.friends.length;
 });
 
 const User = model('User', UserSchema);
